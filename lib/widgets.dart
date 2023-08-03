@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:notas_cuadrantes/logica.dart';
 
-
-class Cuadrante extends StatelessWidget { 
-
-  //
-
-  const Cuadrante({
-    super.key,
-    required this.size,
-    required this.color, 
-    required this.quadrantNumber,
-  });
-
+class Cuadrante2 extends StatelessWidget {
   final int quadrantNumber;
   final Size size;
   final Color color;
-  
+  const Cuadrante2({
+    super.key,
+    required this.size,
+    required this.color,
+    required this.quadrantNumber,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Container( 
+      child: Container(
         height: size.height * 0.4,
         width: size.width * 0.4,
         decoration: BoxDecoration(
@@ -30,7 +24,6 @@ class Cuadrante extends StatelessWidget {
     );
   }
 }
-
 
 class NombreCuadranteHor extends StatelessWidget {
   final String nombre;
@@ -48,7 +41,6 @@ class NombreCuadranteHor extends StatelessWidget {
   }
 }
 
-
 class NombreCuadranteVert extends StatelessWidget {
   final String nombre;
   const NombreCuadranteVert({super.key, required this.nombre});
@@ -65,30 +57,27 @@ class NombreCuadranteVert extends StatelessWidget {
   }
 }
 
-
 class DetailScreen extends StatelessWidget {
-
 //Cuadrente expandido luego de hacerle click.
 
   final int quadrantNumber;
-  
-  DetailScreen(this.quadrantNumber);
+
+  const DetailScreen(this.quadrantNumber);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
-        backgroundColor: Colors.transparent, 
-        elevation: 0, 
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
         title: Text(
           tittleQuadrant(quadrantNumber),
-          style: TextStyle(color: Colors.black), 
+          style: TextStyle(color: Colors.black),
         ),
       ),
-      body: 
-      Center(
+      body: Center(
         child: GestureDetector(
-          onTap: (){
+          onLongPress: () {
             addtask();
           },
           child: Padding(
@@ -98,8 +87,7 @@ class DetailScreen extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               color: Colors.blue,
               child: Center(
-                child: Text(""
-                ),
+                child: Text(""),
               ),
             ),
           ),
@@ -107,15 +95,8 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
-  
- 
-
 }
 
-
-
- addtask() {
-    print("asdsad");
-  }
-
-
+addtask() {
+  print("asdsad");
+}

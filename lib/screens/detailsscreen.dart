@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:notas_cuadrantes/logica.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
 //Cuadrente expandido luego de hacerle click.
 
   final int quadrantNumber;
   final Color quadrantColor;
 
   const DetailScreen(this.quadrantNumber, this.quadrantColor);
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +23,7 @@ class DetailScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          tittleQuadrant(quadrantNumber),
+          tittleQuadrant(widget.quadrantNumber),
           style: TextStyle(color: Colors.black),
         ),
         leading: IconButton(
@@ -38,38 +44,16 @@ class DetailScreen extends StatelessWidget {
               builder: (context) {
                 return AlertDialog(
                   title: Text("Agregar una nota"),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        decoration: InputDecoration(
-                            hintText: "Nombre de la nota",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                            hintText: "  ",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                      ),
-                    ],
+                  content: DIALOGCONTENT(
+                    onAccept: () {
+                      print("acepto");
+                      Navigator.pop(context);
+                    },
+                    onCancel: () {
+                      print("cancelo");
+                      Navigator.pop(context);
+                    },
                   ),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text("Cancelar")),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text("Agregar"))
-                  ],
                 );
               },
             );
@@ -79,7 +63,7 @@ class DetailScreen extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              color: quadrantColor,
+              color: widget.quadrantColor,
               child: Center(
                 child: Slidable(
                   child: Container(
@@ -134,6 +118,85 @@ class DetailScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DIALOGCONTENT extends StatefulWidget {
+  final VoidCallback onAccept;
+  final VoidCallback onCancel;
+  const DIALOGCONTENT(
+      {super.key, required this.onAccept, required this.onCancel});
+
+  @override
+  State<DIALOGCONTENT> createState() => _DIALOGCONTENTState();
+}
+
+class _DIALOGCONTENTState extends State<DIALOGCONTENT> {
+  bool hidden = true;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextField(
+          decoration: InputDecoration(
+              hintText: "Nombre de la nota",
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: GestureDetector(
+            onTap: () {
+              print("cambio estado");
+              setState(() {
+                hidden = !hidden;
+              });
+            },
+            child: Row(
+              children: [
+                // if (hidden) SizedBox(height: 20) else SizedBox(height: 50),
+                Icon(hidden ? Icons.arrow_downward : Icons.arrow_upward),
+                Text(
+                  hidden ? "Agregar Descripción" : "Quitar Descripción",
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
+          ),
+        ),
+        AnimatedSize(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.bounceOut,
+          child: hidden
+              ? SizedBox()
+              : TextField(
+                  decoration: InputDecoration(
+                      hintText: "Descripción",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                ),
+        ),
+        SizedBox(height: 20),
+        Column(
+          children: [
+            TextButton(
+                onPressed: () {
+                  widget.onCancel();
+                },
+                child: Text("Cancelar")),
+            TextButton(
+                onPressed: () {
+                  widget.onAccept();
+                },
+                child: Text("Agregar"))
+          ],
+        )
+      ],
     );
   }
 }

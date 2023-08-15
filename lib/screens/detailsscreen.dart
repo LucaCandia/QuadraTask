@@ -52,7 +52,7 @@ class DetailScreen extends StatelessWidget {
                       ),
                       TextField(
                         decoration: InputDecoration(
-                            hintText: "Contenido de la nota",
+                            hintText: "  ",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10))),
                       ),

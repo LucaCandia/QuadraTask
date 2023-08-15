@@ -68,3 +68,5 @@ class NombreCuadranteVert extends StatelessWidget {
         child: Center(child: Text(nombre)));
   }
 }
+
+
